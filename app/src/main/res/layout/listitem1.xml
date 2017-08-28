@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ändroid="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+<android.support.v7.widget.CardView
+    android:id="@+id/card"
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    app:cardCornerRadius="5dp"
+    app:paddingEnd="5dp"
+    android:layout_weight="1"
+    android:drawingCacheQuality="auto"
+    app:cardUseCompatPadding="false"
+    app:contentPaddingBottom="5dp"
+    android:layout_margin="5dp"
+    android:scrollY="@dimen/cardview_compat_inset_shadow"
+    android:scrollbars="vertical"
+    android:scrollbarSize="5dp"
+    android:elevation="5dp">
+    <LinearLayout
+        android:id="@+id/main_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:id="@+id/h_list"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/h_name"
+                android:layout_width="140dp"
+                android:layout_height="28dp"
+                android:text="Name"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/h_name_get"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/a_list"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/a_name"
+                android:layout_width="140dp"
+                android:layout_height="28dp"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/a_name_get"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:textSize="20sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/c_list"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:textSize="20sp"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/c_name"
+                android:layout_width="140dp"
+                android:layout_height="28dp"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/c_name_get"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/d_list"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:textSize="20sp"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/d_name"
+                android:layout_width="140dp"
+                android:layout_height="28dp"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/d_name_get"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/s_list"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/s_name"
+                android:layout_width="140dp"
+                android:layout_height="28dp"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/s_name_get"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/p_list"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/p_name"
+                android:layout_width="140dp"
+                android:layout_height="28dp"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/p_name_get"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ph_list"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/ph_name"
+                android:layout_width="140dp"
+                android:layout_height="28dp"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/ph_name_get"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/w_list"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal"
+            >
+
+            <TextView
+                android:id="@+id/w_name"
+                android:layout_width="140dp"
+                android:layout_height="28dp"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/w_name_get"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/image_list"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/call"
+                android:adjustViewBounds="true"
+                android:layout_marginLeft="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="8dp"
+                app:srcCompat="@mipmap/ic_call" />
+
+            <ImageButton
+                android:id="@+id/map"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="80dp"
+                android:elevation="8dp"
+                app:srcCompat="@mipmap/ic_search" />
+
+            <ImageButton
+                android:id="@+id/web"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="65dp"
+                android:layout_marginRight="2dp"
+                android:elevation="8dp"
+                app:srcCompat="@mipmap/ic_browse"/>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
+</LinearLayout>

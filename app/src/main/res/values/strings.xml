@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Blood Bank</string>
+    <string name="urls">"https://data.gov.in/node/356981/datastore/export/json"</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="alertDialogLocation">Choose Loocation</string>
+    <string name="alertDialogCOntact">
+        Anchit Gupta
+        anchitgupt2012@gmail.com
+        +919409441467
+    </string>
+    <string name="alertDialogCOntact1">
+
+        Mr. S.K. Tyagi
+        Director
+        TCE InfoSOlution Pvt. Ltd.
+    </string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="intent_passesss">dsffsd</string>
+</resources>
