@@ -45,7 +45,7 @@ class MyAdapter1 extends RecyclerView.Adapter<MyAdapter1.ViewHolder1> {
     @Override
     public void onBindViewHolder(ViewHolder1 holder, int position) {
         final ListItem1 list = listItem.get(position);
-        holder.h.setText("Hospital");
+        holder.h.setText("Hospi tal");
         holder.a.setText("Address");
         holder.c.setText("City");
         holder.d.setText("District");
