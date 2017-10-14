@@ -1,4 +1,4 @@
-package com.example.anchit.phoneotp;
+package com.ateam.anchit.phoneotp;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,17 +6,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Alok Kumar on 05-Aug-17.
  */
 
-class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
+class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder>{
 
     Context context;
     List<ListItem> listItem;
@@ -24,6 +26,7 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public MyAdapter(Context context, List<ListItem> listItem) {
         this.context = context;
         this.listItem = listItem;
+
     }
 
     @Override
@@ -55,6 +58,46 @@ class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         return listItem.size();
     }
 
+  /*  @Override
+    public Filter getFilter() {
+
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+
+                String charString = charSequence.toString();
+
+                if (charString.isEmpty()) {
+
+                    mFilteredList = listItem;
+                } else {
+
+                    ArrayList<ListItem> filteredList = new ArrayList<>();
+
+                    for (ListItem androidVersion : listItem) {
+
+                        if (androidVersion.getName().toLowerCase().contains(charString) || androidVersion.getName().toLowerCase().contains(charString) || androidVersion.getName().toLowerCase().contains(charString)) {
+
+                            filteredList.add(androidVersion);
+                        }
+                    }
+
+                    mFilteredList = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = mFilteredList;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                mFilteredList = (ArrayList<ListItem>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
+*/
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView t1;

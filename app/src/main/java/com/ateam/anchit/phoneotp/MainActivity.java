@@ -1,7 +1,10 @@
-package com.example.anchit.phoneotp;
+package com.ateam.anchit.phoneotp;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.app.VoiceInteractor;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,15 +17,20 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,10 +38,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.PhoneAuthProvider;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,7 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, SearchView.OnQueryTextListener {
 
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
@@ -52,10 +58,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     RequestQueue requestQueue;
     String str1[];
     Context context;
-    public final String url = "https://data.gov.in/node/356981/datastore/export/json";
     FloatingActionButton f1, f2;
     TextView t;
-
+    SearchView searchView;
+    TextView searchPlate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,39 +74,41 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         boolean connect = isNetworkAvailable();
 
         if (!connect) {
-            makeDialog(context,connect);
+            makeDialog(context, connect);
         } else {
             Log.e("Internet ", String.valueOf(connect));
 
             f1 = (FloatingActionButton) findViewById(R.id.floatingActionButton2);
-            f2 = (FloatingActionButton) findViewById(R.id.floatingActionButton3);
-            f2.setVisibility(View.GONE);
             f1.setOnClickListener(this);
-            f2.setOnClickListener(this);
-            t = (TextView) findViewById(R.id.textView2);
-            t.setVisibility(View.GONE);
             progressDialog = new ProgressDialog(this, ProgressDialog.THEME_HOLO_DARK);
             progressDialog.setMessage("Loading data");
             progressDialog.show();
+            jsonParsing("");
 
-            ///
+        }
+    }
+
+    public void jsonParsing(final String find) {
+        ///
+
             Thread t = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     requestQueue = Volley.newRequestQueue(getApplicationContext());
-                    JsonObjectRequest request = new JsonObjectRequest(url, null, new Response.Listener<JSONObject>() {
+                    JsonObjectRequest request = new JsonObjectRequest(getString(R.string.url), null, new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             progressDialog.dismiss();
                             try {
                                 JSONArray array = response.getJSONArray("data");
                                 final String str[] = new String[array.length()];
-                                String[] state = new String[array.length()];
+                                String[] state;
 
-                                for (int i = 0; i < array.length(); i++) {
-                                    JSONArray array1 = array.getJSONArray(i);
-                                    str[i] = array1.getString(1); //+ ":" + array1.getString(17);
-                                }
+                                    for (int i = 0; i < array.length(); i++) {
+                                        JSONArray array1 = array.getJSONArray(i);
+                                        str[i] = array1.getString(1); //+ ":" + array1.getString(17);
+                                    }
+
 
                                 state = getUniqueState(str);
 
@@ -111,19 +119,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 str1 = new String[j];
                                 list = new ArrayList<>();
 
-                                for (int i = 0; i < j; i++) {
-                                    str1[i] = state[i];
-                                    ListItem listItem = new ListItem(str1[i]);
-                                    list.add(i, listItem);
+                                        for (int i = 0; i < j; i++) {
+                                            str1[i] = state[i];
 
-                                }
-                                // STate and city Extraction
+                                            if(state[i].toLowerCase().startsWith(find)){
+                                                ListItem listItem = new ListItem(str1[i]);
+                                                list.add(listItem);
+                                            }
+                                        }
 
-
-                                // Toast.makeText(MainActivity.this, "Str1"+str1.length, Toast.LENGTH_SHORT).show();
                                 recyclerView = (RecyclerView) findViewById(R.id.recycleView);
                                 recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
                                 adapter = new MyAdapter(getApplicationContext(), list);
                                 recyclerView.setAdapter(adapter);
 
@@ -146,17 +152,76 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             t.run();
 
 
-            /////////////////////////////////
-        /*recyclerView = (RecyclerView) findViewById(R.id.recycleView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        list = new ArrayList<>();
+    }
 
-        for(int i=0;i<=20;i++){
-            ListItem listItem = new ListItem("Name:" + i,"Address" + i + "<---");
-            list.add(listItem);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        if (searchItem != null) {
+            searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    //some operation
+                    jsonParsing("");
+                    return false;
+                }
+            });
+            searchView.setOnSearchClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //some operation
+                }
+            });
+            searchPlate = (TextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+            searchPlate.setHint("Search State");
+            View searchPlateView = searchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
+            searchPlateView.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
+            // use this method for search process
+            searchView.setOnQueryTextListener(this);
+            SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
         }
-        adapter =  new MyAdapter(this,list);
-        recyclerView.setAdapter(adapter);Override*/
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        jsonParsing(query);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        jsonParsing(newText);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);hideSoftKeyboard(MainActivity.this);
+            //indViewById(R.id.default_title).setVisibility(View.VISIBLE);
+        } else {
+            super.onBackPressed();
+
+
+        }
+    }
+    public static void hideSoftKeyboard(Activity activity) {
+        final InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        if (inputMethodManager.isActive()) {
+            if (activity.getCurrentFocus() != null) {
+                inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+            }
         }
     }
 
@@ -391,5 +456,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         }
     }
+
+
 }
 

@@ -1,13 +1,20 @@
-package com.example.anchit.phoneotp;
+package com.ateam.anchit.phoneotp;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -26,7 +33,7 @@ import java.util.List;
  * Created by Alok Kumar on 05-Aug-17.
  */
 
-public class Main extends AppCompatActivity {
+public class Main extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     RecyclerView recyclerView;
     RecyclerView.Adapter adapter;
@@ -34,11 +41,11 @@ public class Main extends AppCompatActivity {
     ProgressDialog progressDialog;
     RequestQueue requestQueue1;
     String stateRe;
-    String url = "https://data.gov.in/node/356981/datastore/export/json";
     int j;
     ListItem1 listItem;
     ArrayList<String> arrayList;
-
+    SearchView searchView;
+    TextView searchPlate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +57,18 @@ public class Main extends AppCompatActivity {
       /*  Log.e("Received Data", stateRe);*/
         Bundle bundle = intent.getExtras();
         stateRe = bundle.getString("value");
-
+        setTitle(stateRe);
         ////////////////////////////////////////////
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading data");
         progressDialog.show();
-
+        jsonParsing("");
+    }
         ///
-
+      public void jsonParsing(final String find){
         requestQueue1 = Volley.newRequestQueue(this);
-        JsonObjectRequest request1 = new JsonObjectRequest(url, null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest request1 = new JsonObjectRequest(getString(R.string.url), null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 progressDialog.dismiss();
@@ -82,7 +90,8 @@ public class Main extends AppCompatActivity {
                         // if (array1.getString(1).equals(stateRe)) {
                      
 
-                        if (array1.getString(1).contentEquals(stateRe)) {
+                        if (array1.getString(1).contentEquals(stateRe) &&
+                                (array1.getString(3).toLowerCase().startsWith(find.toLowerCase()))) {
                            /* str[i] = array1.getString(1) + "\n" +
                                     array1.getString(2) + "\n" +
                                     array1.getString(3) + "\n" +
@@ -128,5 +137,67 @@ public class Main extends AppCompatActivity {
         });
         requestQueue1.add(request1);
         /////////////////////////////////////////////
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
+
+        if (searchItem != null) {
+            searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+            searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+                @Override
+                public boolean onClose() {
+                    //some operation
+                    jsonParsing("");
+                    return false;
+                }
+            });
+            searchView.setOnSearchClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //some operation
+                }
+            });
+            searchPlate = (TextView) searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+            searchPlate.setHint("Search City");
+            View searchPlateView = searchView.findViewById(android.support.v7.appcompat.R.id.search_plate);
+            searchPlateView.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
+            // use this method for search process
+            searchView.setOnQueryTextListener(this);
+            SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        jsonParsing(query);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        jsonParsing(newText);
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+            searchView.setSubmitButtonEnabled(true);
+            //findViewById(R.id.default_title).setVisibility(View.VISIBLE);
+        } else {
+            super.onBackPressed();
+        }
     }
 }

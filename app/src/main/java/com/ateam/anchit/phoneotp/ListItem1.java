@@ -1,4 +1,4 @@
-package com.example.anchit.phoneotp;
+package com.ateam.anchit.phoneotp;
 
 /**
  * Created by Aayush on 8/12/2017.

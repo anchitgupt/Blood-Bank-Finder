@@ -1,21 +1,15 @@
-package com.example.anchit.phoneotp;
+package com.ateam.anchit.phoneotp;
 
-import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +39,7 @@ class MyAdapter1 extends RecyclerView.Adapter<MyAdapter1.ViewHolder1> {
     @Override
     public void onBindViewHolder(ViewHolder1 holder, int position) {
         final ListItem1 list = listItem.get(position);
-        holder.h.setText("Hospi tal");
+        holder.h.setText("Hospital");
         holder.a.setText("Address");
         holder.c.setText("City");
         holder.d.setText("District");
@@ -126,7 +120,7 @@ class MyAdapter1 extends RecyclerView.Adapter<MyAdapter1.ViewHolder1> {
             public void onClick(View v) {
                 if (list.getWebsite().contentEquals("NA")) {
 
-                    Toast.makeText(context, "Phone Number Not Available", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Website Not Available", Toast.LENGTH_LONG).show();
                 }
                 else {
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(list.getWebsite()));

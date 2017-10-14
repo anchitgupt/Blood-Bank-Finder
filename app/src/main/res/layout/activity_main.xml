@@ -23,28 +23,4 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/floatingActionButton3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/floatingActionButton2"
-        android:layout_alignEnd="@+id/floatingActionButton2"
-        android:layout_marginBottom="51dp"
-        android:clickable="true"
-        android:visibility="invisible"
-        app:fabSize="normal"
-        app:srcCompat="@android:drawable/sym_contact_card" />
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/floatingActionButton3"
-        android:layout_alignEnd="@+id/floatingActionButton3"
-        android:layout_marginBottom="22dp"
-        android:text="Contact Us"
-        android:visibility="invisible"
-        tools:text="Contact us" />
-
-
 </RelativeLayout>

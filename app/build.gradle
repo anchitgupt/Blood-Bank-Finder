@@ -1,14 +1,19 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        blood {
+        }
+    }
     compileSdkVersion 25
     buildToolsVersion "26.0.1"
     defaultConfig {
-        applicationId "com.example.anchit.phoneotp"
-        minSdkVersion 22
+        applicationId "com.ateam.anchit.phoneotp"
+        minSdkVersion 19
         targetSdkVersion 25
-        versionCode 1
-        versionName "1.0"
+        maxSdkVersion 25
+        versionCode 4
+        versionName "2.1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -20,7 +25,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -30,9 +35,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support:cardview-v7:25.3.1'
     compile 'com.android.support:design:25.3.1'
-    compile 'com.google.firebase:firebase-auth:11.0.0'
     testCompile 'junit:junit:4.12'
 }
-
-
-apply plugin: 'com.google.gms.google-services'
